@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>校园订餐系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+    <style>
+        body { margin: 0; padding: 0; background-color: #f4f6f9; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; }
+        
+        /* === 左侧侧边栏样式 === */
+        .sidebar { width: 220px; background-color: #343a40; color: white; display: flex; flex-direction: column; padding: 20px 0; }
+        .sidebar h3 { text-align: center; margin-bottom: 30px; font-size: 18px; color: #fff; }
+        .nav-item { padding: 15px 25px; color: #c2c7d0; text-decoration: none; display: block; border-left: 3px solid transparent; }
+        .nav-item:hover { background-color: #495057; color: white; }
+        .nav-item.active { background-color: #007bff; color: white; border-left-color: #fff; }
+        .nav-group { margin-left: 20px; font-size: 0.9em; } /* 子菜单缩进 */
+        .nav-group a { padding: 10px 25px; }
+
+        /* === 右侧内容区样式 === */
+        .content { flex: 1; padding: 30px; overflow-y: auto; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        
+        /* 表格美化 */
+        table { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h3>🍱 校园订餐</h3>
+        
+        <div style="padding: 0 20px; margin-bottom: 20px; font-size: 12px; color: #aaa;">Hi, {{ name }}</div>
+
+        <a href="/dashboard" class="nav-item active">🏠 逛店铺 (首页)</a>
+        
+        <div style="margin-top: 10px; color: #6c757d; padding: 0 25px; font-size: 12px;">订单管理</div>
+        <a href="/my_orders/unshipped" class="nav-item nav-group">⏳ 未接单订单</a>
+        <a href="/my_orders/delivering" class="nav-item nav-group">🛵 配送中订单</a>
+        <a href="/my_orders/completed" class="nav-item nav-group">✅ 已完成订单</a>
+        
+        <a href="/logout" class="nav-item" style="margin-top: auto; background-color: #c82333;">🚪 退出登录</a>
+    </div>
+
+    <div class="content">
+        <div class="top-bar">
+            <h2>🏪 优选店铺列表</h2>
+        </div>
+
+        <table>
+            <thead><tr><th>店铺名称</th><th>位置</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody>
+                {% for shop in shops %}
+                <tr>
+                    <td style="font-weight: bold; font-size: 1.1em;">{{ shop.shop_name }}</td>
+                    <td>{{ shop.location }}</td>
+                    <td><span class="label success">营业中</span></td>
+                    <td>
+                        <a href="/shop/{{ shop.shop_id }}" class="button success">进店逛逛</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

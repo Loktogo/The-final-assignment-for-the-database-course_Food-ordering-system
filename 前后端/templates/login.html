@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>校园订餐系统 - 登录</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; margin-top: 100px; background-color: #f0f2f5; }
+        .box { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 300px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .error { color: red; font-size: 14px; text-align: center;}
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2 style="text-align: center;">系统登录</h2>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="error">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <input type="text" name="username" placeholder="请输入账号" required>
+            <input type="password" name="password" placeholder="请输入密码" required>
+            <button type="submit">立即登录</button>
+        </form>
+        
+        <div style="margin-top: 20px; font-size: 12px; color: #666;">
+            <p>测试账号(密码均为123456):</p>
+            <ul>
+                <li>消费者: student</li>
+                <li>商家: boss</li>
+                <li>配送员: rider</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商家管理后台</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+    <style>
+        /* 复用统一的 CSS 样式 */
+        body { margin: 0; padding: 0; background-color: #f4f6f9; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; }
+        
+        .sidebar { width: 220px; background-color: #343a40; color: white; display: flex; flex-direction: column; padding: 20px 0; }
+        .sidebar h3 { text-align: center; margin-bottom: 30px; font-size: 18px; color: #fff; }
+        .nav-item { padding: 15px 25px; color: #c2c7d0; text-decoration: none; display: block; border-left: 3px solid transparent; }
+        .nav-item:hover { background-color: #495057; color: white; }
+        .nav-item.active { background-color: #007bff; color: white; border-left-color: #fff; }
+        
+        .content { flex: 1; padding: 30px; overflow-y: auto; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        
+        table { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h3>👨‍🍳 商家管理系统</h3>
+        <div style="padding: 0 20px; margin-bottom: 20px; font-size: 12px; color: #aaa;">老板好：{{ name }}</div>
+
+        <a href="#" class="nav-item active">📦 订单管理 (首页)</a>
+        <a href="#" class="nav-item" style="opacity: 0.5; cursor: not-allowed;">🥗 菜品管理 (开发中)</a>
+        
+        <a href="/logout" class="nav-item" style="margin-top: auto; background-color: #c82333;">🚪 退出登录</a>
+    </div>
+
+    <div class="content">
+        <div class="top-bar">
+            <h2>📦 实时订单列表</h2>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>下单时间</th>
+                    <th>菜品名称</th>
+                    <th>顾客昵称</th>
+                    <th>配送员</th>
+                    <th>金额</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if orders|length == 0 %}
+                    <tr><td colspan="7" style="text-align: center; color: #999;">暂无订单，生意兴隆在路上！</td></tr>
+                {% else %}
+                    {% for order in orders %}
+                    <tr>
+                        <td style="font-size: 0.9em; color: #666;">{{ order.create_time }}</td>
+                        <td style="font-weight: bold; color: #333;">{{ order.dish_name }}</td>
+                        <td>{{ order.customer_nickname }}</td>
+                        <td>
+                            {% if order.courier_nickname %}
+                                👤 {{ order.courier_nickname }}
+                            {% else %}
+                                <span style="color: #ccc;">(等待接单)</span>
+                            {% endif %}
+                        </td>
+                        <td style="color: #d9534f;">¥{{ order.total_amount }}</td>
+                        <td>
+                            {% if order.status == 0 %} <span class="label warning">待接单</span>
+                            {% elif order.status == 1 %} <span class="label success">配送中</span>
+                            {% elif order.status == 2 %} <span class="label">已完成</span>
+                            {% elif order.status == 4 %} <span class="label error">已取消</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if order.status == 2 %}
+                                <button class="pseudo small" disabled>✅ 完成</button>
+                            {% else %}
+                                <button class="pseudo small" disabled>进行中</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
